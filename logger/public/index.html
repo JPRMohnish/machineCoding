@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
+    <script src="/logger/public/main.js"></script>
+    <title>Logs</title>
+</head>
+
+<body>
+    <ul>
+
+    </ul>
+    <script type="text/javascript">
+        var socket = io('ws://localhost:3000');
+        console.log("hello");
+        socket.on('message', (data) => {
+            for (let line of data) {
+                if (line && line.length > 0) {
+                    const el = document.createElement('li');
+                    el.innerHTML = line;
+                    document.querySelector('ul').appendChild(el);
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
