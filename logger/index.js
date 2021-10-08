@@ -11,8 +11,10 @@ const fs = require('fs');
 
 const eventLoop = async () => {
     const data = new Data(filename, linelimit);
-    await data.openFile();
     await data.readFile();
+    data.past = data.filesize - 1;
+    console.log(data.filesize, data.past);
+    console.log(data.data);
     const io = require('socket.io')(http, {
         cors: { origin: "*" }
     })
@@ -32,9 +34,12 @@ const eventLoop = async () => {
 
     fs.watch(filename, async (event, filename) => {
         const changed_data = await data.readFile();
+        console.log(changed_data);
         if (changed_data) {
             Socket.burstData(changed_data);
         }
+        data.past = data.filesize - 1;
+        console.log(data.filesize, data.past);
     });
 
     http.listen(3000, (err) => {
